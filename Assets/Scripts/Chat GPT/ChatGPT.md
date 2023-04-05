@@ -5,7 +5,7 @@ ref https://note.com/negipoyoc/n/n88189e590ac3
 
 By using tools such as [mermaid live editor](https://mermaid-js.github.io/mermaid-live-editor/), it is possible to view the class diagram.
 ```mermaid  
-%%%
+%%%  
 title: GPT Classes  
 %%%  
 classDiagram
