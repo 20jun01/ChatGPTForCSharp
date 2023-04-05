@@ -22,34 +22,24 @@ namespace Chat_GPT
         //会話履歴を保持するリスト
         private readonly List<ChatGPTMessageModel> _messageList = new();
 
-        private ChatGPTMessageModel _systemSetting = new ChatGPTMessageModel();
+        private ChatGPTMessageModel LastMessage { get; set; }
 
-        private ChatGPTMessageModel _lastMessage = new ChatGPTMessageModel();
-
-        public ChatGPTMessageModel LastMessage
-        {
-            get => _lastMessage;
-        }
-
-        public ChatGPTMessageModel SystemSetting
-        {
-            get => _systemSetting;
-        }
+        private ChatGPTMessageModel SystemSetting { get; }
 
         public ChatGPTConnection(string apiKey = "", ChatGPTMessageModel systemSetting = null)
         {
             _headers["Authorization"] = "Bearer " + apiKey;
-            _systemSetting = systemSetting?? new ChatGPTMessageModel(){role = "system", content = "語尾に「にゃ」をつけて"};
+            SystemSetting = systemSetting?? new ChatGPTMessageModel(){role = "system", content = "語尾に「にゃ」をつけて"};
         }
 
         public void SetGptSetting(string setting)
         {
-            _systemSetting.content = setting;
+            SystemSetting.content = setting;
         }
 
         public void AddGptSetting(string setting)
         {
-            _systemSetting.content += setting;
+            SystemSetting.content += setting;
         }
 
         public void ResetLog()
@@ -97,7 +87,7 @@ namespace Chat_GPT
                 var responseObject = JsonUtility.FromJson<ChatGPTResponseModel>(responseString);
                 Debug.Log("ChatGPT:" + responseObject.choices[0].message.content);
                 _messageList.Add(responseObject.choices[0].message);
-                _lastMessage = responseObject.choices[0].message;
+                LastMessage = responseObject.choices[0].message;
                 return responseObject;
             }
         }
