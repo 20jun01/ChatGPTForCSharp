@@ -7,17 +7,14 @@ By using tools such as [mermaid live editor](https://mermaid-js.github.io/mermai
 ```mermaid  
 classDiagram
 class ChatGPTConnection {
-    - const string _apiUrl
-    - const string GPTModel
     - Dictionary<string, string> _headers
     - List<ChatGPTMessageModel> _messageList
     + ChatGPTMessageModel LastMessage
     + ChatGPTMessageModel SystemSetting
     + ChatGPTConnection(string apiKey, ChatGPTMessageModel systemSetting)
-    + SetGPTSetting(string setting)
-    + AddGPTSetting(string setting)
     + ResetLog()
     + async UniTask<ChatGPTResponseModel> RequestAsync(string userMessage)
+    - HandleResponse(string response)
 }
 
 class ChatGPTMessageModel{

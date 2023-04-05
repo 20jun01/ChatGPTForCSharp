@@ -13,33 +13,24 @@ namespace Chat_GPT
         // api settings
         private const string APIUrl = "https://api.openai.com/v1/chat/completions";
         private const string GptModel = "gpt-3.5-turbo";
+
         private readonly Dictionary<string, string> _headers = new Dictionary<string, string>
-            {
-                {"Content-type", "application/json"},
-                {"X-Slack-No-Retry", "1"}
-            };
+        {
+            { "Content-type", "application/json" },
+            { "X-Slack-No-Retry", "1" }
+        };
 
         //会話履歴を保持するリスト
         private readonly List<ChatGPTMessageModel> _messageList = new();
 
         private ChatGPTMessageModel LastMessage { get; set; }
 
-        private ChatGPTMessageModel SystemSetting { get; }
+        private ChatGPTMessageModel SystemSetting { get; set; }
 
         public ChatGPTConnection(string apiKey = "", ChatGPTMessageModel systemSetting = null)
         {
             _headers["Authorization"] = "Bearer " + apiKey;
-            SystemSetting = systemSetting?? new ChatGPTMessageModel(){role = "system", content = "語尾に「にゃ」をつけて"};
-        }
-
-        public void SetGptSetting(string setting)
-        {
-            SystemSetting.content = setting;
-        }
-
-        public void AddGptSetting(string setting)
-        {
-            SystemSetting.content += setting;
+            SystemSetting = systemSetting ?? new ChatGPTMessageModel() { role = "system", content = "語尾に「にゃ」をつけて" };
         }
 
         public void ResetLog()
@@ -49,7 +40,7 @@ namespace Chat_GPT
 
         public async UniTask<ChatGPTResponseModel> RequestAsync(string userMessage)
         {
-            _messageList.Add(new ChatGPTMessageModel {role = "user", content = userMessage});
+            _messageList.Add(new ChatGPTMessageModel { role = "user", content = userMessage });
 
             //文章生成で利用するモデルやトークン上限、プロンプトをオプションに設定
             var options = new ChatGPTCompletionRequestModel()
@@ -83,13 +74,17 @@ namespace Chat_GPT
             }
             else
             {
-                var responseString = request.downloadHandler.text;
-                var responseObject = JsonUtility.FromJson<ChatGPTResponseModel>(responseString);
-                Debug.Log("ChatGPT:" + responseObject.choices[0].message.content);
-                _messageList.Add(responseObject.choices[0].message);
-                LastMessage = responseObject.choices[0].message;
-                return responseObject;
+                return HandleResponse(request.downloadHandler.text);
             }
+        }
+
+        private ChatGPTResponseModel HandleResponse(string responseString)
+        {
+            var responseObject = JsonUtility.FromJson<ChatGPTResponseModel>(responseString);
+            Debug.Log("ChatGPT:" + responseObject.choices[0].message.content);
+            _messageList.Add(responseObject.choices[0].message);
+            LastMessage = responseObject.choices[0].message;
+            return responseObject;
         }
     }
 }
