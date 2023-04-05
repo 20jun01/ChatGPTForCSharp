@@ -11,8 +11,6 @@ class ChatGPTConnection {
     - const string GPTModel
     - Dictionary<string, string> _headers
     - List<ChatGPTMessageModel> _messageList
-    - ChatGPTMessageModel _systemSetting
-    - ChatGPTMessageModel _lastMessage
     + ChatGPTMessageModel LastMessage
     + ChatGPTMessageModel SystemSetting
     + ChatGPTConnection(string apiKey, ChatGPTMessageModel systemSetting)
