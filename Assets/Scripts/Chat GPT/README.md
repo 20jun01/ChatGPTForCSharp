@@ -45,4 +45,6 @@ class ResponseChoiceModel{
 ChatGPTConnection --> ChatGPTMessageModel
 ChatGPTCompletionRequestModel --> ChatGPTMessageModel
 ChatGPTResponseModel --> ResponseChoiceModel
+ChatGPTConnection --> ChatGPTCompletionRequestModel
+ChatGPTConnection --> ChatGPTResponseModel
 ```
