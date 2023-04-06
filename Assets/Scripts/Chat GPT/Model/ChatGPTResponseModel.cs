@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Chat_GPT.Model
 {
     //ChatGPT APIからのResponseを受け取るためのクラス
-    [System.Serializable]
+    [Serializable]
     public class ChatGPTResponseModel
     {
         public string id;
