@@ -10,7 +10,7 @@ namespace Operator
 
         private void Awake()
         {
-            _openAIApiKey = EnvironmentManager.Instance.GetConfig("OpenAI_API_KEY");
+            _openAIApiKey = EnvironmentManager.GetApiKey();
         }
 
         async void Start()
