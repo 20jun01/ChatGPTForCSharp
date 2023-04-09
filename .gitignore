@@ -74,3 +74,4 @@ crashlytics-build.properties
 
 # Customize by 20jun01
 *secret.xml
+/[Aa]ssets/AdvancedInputField/*
